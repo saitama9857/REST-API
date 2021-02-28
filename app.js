@@ -1,7 +1,7 @@
 
 const Joi = require('joi');
-const express = require('express');
-const app = express();
+ const express = require('express');
+ const app = express();
 
 
 app.use(express.json());
@@ -76,6 +76,6 @@ app.get('/api/courses/:id', (req, res)=>{
 //we listen the server
 const PORT = process.env.PORT || 80;
 app.listen(PORT , () =>{
-     console.log('here we go again');
+     console.log(`${PORT} is working`);
 });
 
