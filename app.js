@@ -1,10 +1,24 @@
 
 const Joi = require('joi');
- const express = require('express');
- const app = express();
+const express = require('express');
+const app = express();
+const env = process.env;
+
+const { Client } = require('pg');
+
+const client = new Client({
+    user: env.SPRING_USERNAME,
+    host: 'localhost',
+    database: 'books',
+    password: env.SPRING_PASSWORD,
+    port: 5432,
+});
+
+client.connect();
 
 
 app.use(express.json());
+app.set('view engine', 'pug');
 
 const courses = [
      {id: 1, name: 'course1'},
@@ -17,10 +31,12 @@ const courses = [
 
 //ROUTERS
 app.get('/', (req , res) =>{
-      res.send('WE ARE IN LOCALLHOST');
+     res.render('index', { title: 'Hey', message: 'Hello there!' })
 });
-app.get('/api/courses', (req,   res)=>{
-     res.send(courses);
+
+app.get('/api/courses', async function(req,   res) {
+     const {rows, fields} = await client.query('SELECT * from users;');
+     res.send(rows);
 });
 
 app.post('/api/courses', (req, res)=>{
